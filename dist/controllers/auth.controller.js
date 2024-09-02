@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleLogout = exports.handleSignIn = exports.handleSignUp = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const error_utils_1 = require("../utils/error.utils");
 const authentication_util_1 = require("../utils/authentication.util");
 const constants_util_1 = require("../utils/constants.util");
@@ -37,7 +37,7 @@ const handleSignUp = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             return next((0, error_utils_1.errorHandler)(409, "User with given email already exists!"));
         }
         // Hash the password
-        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         // Create and save the new user
         user = new user_model_1.default({ name, email, password: hashedPassword });
         yield user.save();
@@ -62,7 +62,7 @@ const handleSignIn = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             return next((0, error_utils_1.errorHandler)(401, "User not found"));
         }
         // Compare passwords
-        const validPassword = yield bcrypt_1.default.compare(password, user.password);
+        const validPassword = yield bcryptjs_1.default.compare(password, user.password);
         if (!validPassword) {
             return next((0, error_utils_1.errorHandler)(403, "Incorrect password"));
         }

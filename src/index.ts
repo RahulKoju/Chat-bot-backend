@@ -15,11 +15,10 @@ connectToDatabase();
 
 app.use(
   cors({
-    origin: "*",
-    credentials: false,
+    origin: process.env.ALLOWED_ORIGIN || "http://localhost:5173",
+    credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    allowedHeaders: "*",
-    preflightContinue: false,
+    allowedHeaders: "Content-Type, Authorization",
     optionsSuccessStatus: 204,
   })
 );
