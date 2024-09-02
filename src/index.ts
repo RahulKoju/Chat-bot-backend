@@ -6,9 +6,8 @@ import userRoutes from "./routes/user.route";
 import chatRoutes from "./routes/chat.route";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import cookieParser from "cookie-parser";
-import path from "path";
 dotenv.config();
-const __dirname = path.resolve();
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -25,12 +24,6 @@ app.listen(PORT, () => {
 //Routes
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
-
-app.use(express.static(path.join(__dirname, "/client/dist")));
-
-app.use("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
 
 //error middleware
 app.use(errorMiddleware);
