@@ -15,7 +15,7 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 8000;
 (0, connection_1.connectToDatabase)();
-app.use((0, cors_1.default)({ origin: "http://localhost:5173", credentials: true }));
+app.use((0, cors_1.default)({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)(process.env.COOKIE_SECRET));
 app.listen(PORT, () => {
