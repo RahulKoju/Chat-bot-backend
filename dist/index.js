@@ -16,7 +16,7 @@ const app = (0, express_1.default)();
 const PORT = process.env.PORT || 8000;
 (0, connection_1.connectToDatabase)();
 app.use((0, cors_1.default)({
-    origin: process.env.ALLOWED_ORIGIN || "http://localhost:5173",
+    origin: process.env.ALLOWED_ORIGIN,
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     allowedHeaders: "Content-Type, Authorization",
