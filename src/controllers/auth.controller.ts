@@ -122,6 +122,8 @@ export const handleLogout = async (
       path: "/",
       httpOnly: true,
       signed: true,
+      sameSite: isProduction ? ("none" as const) : ("lax" as const),
+      secure: isProduction,
     });
     res.status(200).json({
       message: "Logged Out",

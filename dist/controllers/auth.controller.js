@@ -106,6 +106,8 @@ const handleLogout = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             path: "/",
             httpOnly: true,
             signed: true,
+            sameSite: isProduction ? "none" : "lax",
+            secure: isProduction,
         });
         res.status(200).json({
             message: "Logged Out",
