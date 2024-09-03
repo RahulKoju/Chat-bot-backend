@@ -18,6 +18,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const error_utils_1 = require("../utils/error.utils");
 const authentication_util_1 = require("../utils/authentication.util");
 const constants_util_1 = require("../utils/constants.util");
+const isProduction = process.env.NODE_ENV === "production";
 // Handle Sign Up
 const handleSignUp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -66,20 +67,21 @@ const handleSignIn = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         if (!validPassword) {
             return next((0, error_utils_1.errorHandler)(403, "Incorrect password"));
         }
-        res.clearCookie(constants_util_1.COOKIE_NAME, {
+        // Common cookie options
+        const cookieOptions = {
             path: "/",
             httpOnly: true,
             signed: true,
-        });
+            sameSite: isProduction ? "none" : "lax",
+            secure: isProduction,
+        };
+        // Clear existing cookie
+        res.clearCookie(constants_util_1.COOKIE_NAME, cookieOptions);
         const token = (0, authentication_util_1.createToken)(user._id.toString(), user.email, "7d");
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
-        res.cookie(constants_util_1.COOKIE_NAME, token, {
-            path: "/",
-            expires,
-            httpOnly: true,
-            signed: true,
-        });
+        // Set new cookie
+        res.cookie(constants_util_1.COOKIE_NAME, token, Object.assign(Object.assign({}, cookieOptions), { expires }));
         res.status(200).json({
             message: "Sign In successful",
             name: user.name,
